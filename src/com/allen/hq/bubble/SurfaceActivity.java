@@ -35,8 +35,7 @@ public class SurfaceActivity extends Activity {
 		mView = new BubbleSurface(mContext);
 		mView.SetCallBack(new BubbleCallBack(){
 
-			@Override
-			public void onUnlock() {
+			public void onTrigger() {
 				// TODO Auto-generated method stub
 				try {
 					SurfaceActivity.this.finish();
@@ -44,6 +43,13 @@ public class SurfaceActivity extends Activity {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+
+
+			@Override
+			public void onReady() {
+				// TODO Auto-generated method stub
+				
 			}
 			
 		});
