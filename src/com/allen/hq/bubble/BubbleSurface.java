@@ -22,6 +22,8 @@ import com.allen.hq.R;
 
 public class BubbleSurface extends SurfaceView 
 			implements SurfaceHolder.Callback {
+
+
 	private static final String TAG = "BubbleSurface";
 	private final int[] COLOUR = {0xffffff,0xffE717b6,
 			0xffffff,0xffffff,0xff1fffda,0xffffff,0xffffff
@@ -82,6 +84,9 @@ public class BubbleSurface extends SurfaceView
 		
 		drawThread = new DrawThread();
 		drawThread.start();
+		//drawThread.getState()
+
+
 	}
 
 	private void  createBubbles(float x, float y,int number){
@@ -282,13 +287,16 @@ public class BubbleSurface extends SurfaceView
 
 	class DrawThread extends Thread{
 		public boolean stoped = false;
-		
+		public DrawThread(){
+			
+		}
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			while (!stoped) {
 				try {
 					Canvas c = mHolder.lockCanvas();
+					
 					doDraw(c);
 					
 					mHolder.unlockCanvasAndPost(c);
