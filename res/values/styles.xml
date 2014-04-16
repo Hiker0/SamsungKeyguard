@@ -14,6 +14,8 @@
 
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
+        <item name="android:activityOpenEnterAnimation">@anim/lock_screen_enter</item>  
+		<item name="android:activityCloseExitAnimation">@anim/lock_screen_exit</item>
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 

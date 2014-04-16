@@ -45,6 +45,7 @@ public class BubbleUnlockPanel extends FrameLayout{
 		Log.d("doom-lockscreen", "UnlockPanel ontouchevent action:"+action);	
 		Log.d("doom-lockscreen", "UnlockPanel ontouchevent mHalo:"+mbubble);			
 		if(mbubble != null){
+
 			return mbubble.handleTouchEvent(event);
 		}
 		return true;//super.onTouchEvent(event);

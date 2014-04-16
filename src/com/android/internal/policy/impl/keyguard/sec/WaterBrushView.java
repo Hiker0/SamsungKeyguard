@@ -58,7 +58,7 @@ private static final String DEFAULT_WALLPAPER_IMAGE_PATH = "/system/wallpaper/lo
       mRenderer = new WaterColorRenderer(this.mContext, this, this.mJniWaterColor, 0, this.mCurrentBG);   
     }
 
-      mRenderer.setSoundRID(R.raw.walercolor_tap,R.raw.walercolor_unlock, this.leftVolumeMax, this.rightVolumeMax);
+      mRenderer.setSoundRID(R.raw.watercolor_tap,R.raw.watercolor_unlock, this.leftVolumeMax, this.rightVolumeMax);
       if (detectOpenGLES20()){
             super.setEGLContextClientVersion(2);
             super.setEGLConfigChooser(8, 8, 8, 8, 16, 0);

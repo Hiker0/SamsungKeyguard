@@ -30,7 +30,10 @@ public class SurfaceActivity extends Activity {
 
 		super.onCreate(savedInstanceState);
 		
+		
+		
 		mContext = this;
+		this.overridePendingTransition(R.anim.lock_screen_enter,0);  
 		// mView = new BasicGLSurfaceView(getApplication());
 		mView = new BubbleSurface(mContext);
 		mView.SetCallBack(new BubbleCallBack(){
@@ -106,6 +109,13 @@ public class SurfaceActivity extends Activity {
 		// root.addView(water);
 
 	}
+	@Override  
+	public void finish() {  
+	    // TODO Auto-generated method stub  
+	    super.finish();  
+	    //关闭窗体动画显示  
+	    this.overridePendingTransition(R.anim.lock_screen_exit,R.anim.lock_screen_exit);  
+	} 
 
 	@Override
 	protected void onStop() {
