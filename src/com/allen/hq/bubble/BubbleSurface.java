@@ -23,6 +23,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.allen.hq.R;
+import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
+
 import android.graphics.PorterDuff;
 
 public class BubbleSurface extends SurfaceView 
@@ -39,7 +41,7 @@ public class BubbleSurface extends SurfaceView
 
 	private Point orignPoint,curPoint;
 
-	private BubbleCallBack mCallback;
+	private UnlockCallBack mCallback;
 	private SoundPool mSoundPool = null;
 	private int[] sounds = null;
 	private Random random =new Random();
@@ -126,13 +128,8 @@ public class BubbleSurface extends SurfaceView
 		
 	}
 
-	public interface BubbleCallBack{
-		
-      public void onTrigger();
-      public void onReady();
-	}
-	
-	public void SetCallBack(BubbleCallBack callback){
+
+	public void SetCallBack(UnlockCallBack callback){
 		
 		mCallback = callback;
 	}
@@ -143,7 +140,7 @@ public class BubbleSurface extends SurfaceView
 		super(context);
 		// TODO Auto-generated constructor stub
 		mHolder=getHolder();
-		setZOrderOnTop(true);
+		//setZOrderOnTop(true);
 		mHolder.setFormat(PixelFormat.TRANSPARENT);
 		mHolder.addCallback(this);
 		mBubbleList = new ArrayList<Bubble>(){};
@@ -253,7 +250,7 @@ public class BubbleSurface extends SurfaceView
 		Paint p = new Paint(); 
 		canvas.drawBitmap(backgroundImage, 0, 0, p);
 		//canvas.drawBitmap(bubbleImage, 0, 0, p);
-		canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+		//canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 		
 		Paint paint = new Paint(); 
 		paint.setStyle(Paint.Style.FILL);

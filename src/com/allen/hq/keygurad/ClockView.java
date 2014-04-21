@@ -41,7 +41,7 @@ import com.allen.hq.R;
  */
 public class ClockView extends RelativeLayout {
 /* <-- wangmingdong -5-6-2013 19:52:04 */
-    private static final String ANDROID_CLOCK_FONT_FILE = "/system/fonts/DroidSans.ttf";//DroidSans.TTF";
+    private static final String ANDROID_CLOCK_FONT_FILE = "fonts/SamsungSans-Light.ttf";//DroidSans.TTF";
 /* --> wangmingdong  */
 
 /* <-- wangmingdong -5-7-2013 10:32:37 
@@ -165,7 +165,7 @@ public class ClockView extends RelativeLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mTimeView = (TextView) findViewById(R.id.clock_text);
-        mTimeView.setTypeface(Typeface.createFromFile(ANDROID_CLOCK_FONT_FILE));
+        mTimeView.setTypeface(Typeface.createFromAsset(mContext.getAssets(), ANDROID_CLOCK_FONT_FILE));
         mAmPm = new AmPm(this, null);
         mCalendar = Calendar.getInstance();
         setDateFormat();

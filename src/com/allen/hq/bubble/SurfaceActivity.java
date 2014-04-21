@@ -14,7 +14,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.LinearLayout;
 
 import com.allen.hq.R;
-import com.allen.hq.bubble.BubbleSurface.BubbleCallBack;
+import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
 
 public class SurfaceActivity extends Activity {
     private Context mContext=null;
@@ -36,7 +36,7 @@ public class SurfaceActivity extends Activity {
 		this.overridePendingTransition(R.anim.lock_screen_enter,0);  
 		// mView = new BasicGLSurfaceView(getApplication());
 		mView = new BubbleSurface(mContext);
-		mView.SetCallBack(new BubbleCallBack(){
+		mView.SetCallBack(new UnlockCallBack(){
 
 			public void onTrigger() {
 				// TODO Auto-generated method stub
@@ -59,17 +59,9 @@ public class SurfaceActivity extends Activity {
 		
 		 this.setContentView(R.layout.fullscreen);
 		
-		Animation rotateAnimation = new RotateAnimation(0f, 360f);  
-        rotateAnimation.setDuration(1000);  
         
 		surfaceroot = (LinearLayout) this.findViewById(R.id.surfaceroot);
- 
-		
-
-		
 		surfaceroot.addView(mView);
-
-        
 		
 		surfaceroot.setOnTouchListener(new View.OnTouchListener() {
 			

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import com.allen.hq.R;
+import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
 import com.android.internal.policy.impl.keyguard.sec.WaterBrushView.OnTriggerListener;
 
 /*<---[don't suport] ZhouXF 2013-09-26 {
@@ -492,8 +493,8 @@ public class WaterColorRenderer implements GLSurfaceView.Renderer {
 		showUnlockAffordance(UNLOCK_DELAY_TIME);
 		}
 	}
-	  private OnTriggerListener mOnTriggerListener;
-	  public void setOnTriggerListener(OnTriggerListener listener) {
+	  private UnlockCallBack mOnTriggerListener;
+	  public void setOnTriggerListener(UnlockCallBack listener) {
 	      mOnTriggerListener = listener;
 	  }
 }

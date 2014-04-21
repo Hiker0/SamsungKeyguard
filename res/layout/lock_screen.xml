@@ -296,12 +296,6 @@
                     android:layout_height="wrap_content"
                     layout="@layout/keyguard_message_area" />
 
-                <UnlockPanel
-                    android:id="@+id/keyguard_unlock_panel"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="20dp" >
-                </UnlockPanel>
                 <!-- wangmingdong -->
 
                 <include

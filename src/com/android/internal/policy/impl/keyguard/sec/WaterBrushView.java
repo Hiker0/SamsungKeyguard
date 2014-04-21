@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.allen.hq.R;
+import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
 import com.allen.hq.keygurad.UnlockView;
 
 
@@ -242,7 +243,7 @@ private static final String DEFAULT_WALLPAPER_IMAGE_PATH = "/system/wallpaper/lo
       public void onTrigger();
       public void onReady();
   }
-  public void setOnTriggerListener(OnTriggerListener listener) {
+  public void setOnTriggerListener(UnlockCallBack listener) {
       this.mRenderer.setOnTriggerListener(listener);
   }
 }

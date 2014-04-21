@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.allen.hq.R;
+import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
 import com.android.internal.policy.impl.keyguard.sec.WaterBrushView;
 import com.android.internal.policy.impl.keyguard.sec.WaterBrushView.OnTriggerListener;
 
@@ -25,13 +26,14 @@ public class HQLockServer extends Service {
 	private  WindowManager mWM = null;
 	private  WindowManager.LayoutParams  wp = null;
     
-	private WaterBrushView water= null;
+	private View view= null;
+	private LockAdapter adapter= null;
 	private LinearLayout surfaceroot = null;
 	private FrameLayout root = null;
 	
 
 	
-    private OnTriggerListener mOnTriggerListener;
+    private UnlockCallBack callback = null;
 
 	
 	@Override
@@ -46,10 +48,7 @@ public class HQLockServer extends Service {
 		super.onCreate();
 		
 		mContext = this;
-		 inSertWindow();
-		 
-		 
-		
+		adapter = new LockAdapter(mContext);
 	}
 
 	@Override
@@ -62,11 +61,14 @@ public class HQLockServer extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		// TODO Auto-generated method stub
+		onShow();
+		
 		return super.onStartCommand(intent, flags, startId);
+		
 	}
 	
 	
-	protected void inSertWindow(){
+	protected void onShow(){
 		
 		final LayoutInflater inflater = LayoutInflater.from(mContext);
 		
@@ -88,8 +90,8 @@ public class HQLockServer extends Service {
         mWM.addView(root, wp);
         
 		
-		water = new WaterBrushView(this);
-		mOnTriggerListener = new OnTriggerListener(){
+        view = adapter.getView();
+        callback = new UnlockCallBack(){
 
 			@Override
 			public void onTrigger() {
@@ -104,19 +106,20 @@ public class HQLockServer extends Service {
 			}
 			
 		};
-		water.setOnTriggerListener(mOnTriggerListener);
-		
-		surfaceroot.addView(water);
 
-        
-		water.show();
+
+		view = adapter.getView();
+		adapter.setCallBack(callback);
+		
+		surfaceroot.addView(view);
+
 		
 		root.setOnTouchListener(new View.OnTouchListener() {
 			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				water.handleTouchEvent(event);
+				adapter.handleTouchEvent(event);
 			
 				return false;
 			}
