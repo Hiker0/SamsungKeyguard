@@ -25,12 +25,11 @@ import android.view.SurfaceView;
 import com.allen.hq.R;
 import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
 
-import android.graphics.PorterDuff;
 
 public class BubbleSurface extends SurfaceView 
 			implements SurfaceHolder.Callback {
 	private static final String TAG = "BubbleSurface";
-	private static final int    FORKMILLIS = 1000; 
+	private static final int    FORKMILLIS = 1200; 
 	private static final int    UNLOCKMILLIS = 700; 
 	
 	private SurfaceHolder mHolder=null; 
@@ -48,6 +47,7 @@ public class BubbleSurface extends SurfaceView
 	private Context mContext = null;
 	private boolean surfaceReady = false;
 	private boolean unLocking    = false;
+	private boolean touching    = false;
 	
 	Handler mHandle = new Handler();
 	
@@ -85,7 +85,7 @@ public class BubbleSurface extends SurfaceView
 						// invalidate();
 						doDraw(c);
 						mHolder.unlockCanvasAndPost(c);
-						Thread.sleep(20);
+						Thread.sleep(15);
 					} catch (Exception e) {
 						Log.d(TAG, "Thread error");
 					}// end try
@@ -170,6 +170,7 @@ public class BubbleSurface extends SurfaceView
 		// TODO Auto-generated method stub
 		Log.d(TAG,"surfaceCreated ");
 		Drawrect = holder.getSurfaceFrame();
+		Log.d(TAG,"Drawrect: "+Drawrect.width()+";"+Drawrect.height());
 		setSound();
 		backgroundImage = createBitmap();
 		
@@ -200,7 +201,7 @@ public class BubbleSurface extends SurfaceView
 			if(size > 450){
 				return;
 			}
-			int type = random.nextInt(15);
+			int type = random.nextInt(20);
 			Bubble bubble = createBubble(x,y,type);
 			mBubbleList.add(bubble);
 		}
@@ -210,8 +211,9 @@ public class BubbleSurface extends SurfaceView
 		
 		Bubble mBubble = new Bubble();
 		
-		mBubble.color = getColor(backgroundImage, (int)x, (int)y);
 		
+		mBubble.color = getColor(backgroundImage, (int)x, (int)y);
+
 		mBubble.alpha = 0xff;
 		
 		mBubble.life = 50 + random.nextInt(50);
@@ -222,11 +224,11 @@ public class BubbleSurface extends SurfaceView
 		int size;
 		
 		if(type == 1){
-			size = 15 +  random.nextInt(15);
-		}else if(type >13){
-			size = 2 +  random.nextInt(5);
+			size = 35 +  random.nextInt(10);
+		}else if(type >19){
+			size = random.nextInt(5);
 		}else{
-			size = 4 +  random.nextInt(8);
+			size = 4+  random.nextInt(15);
 		}
 		
 		mBubble.size = size;
@@ -234,9 +236,9 @@ public class BubbleSurface extends SurfaceView
 		mBubble.x = x+random.nextInt(30);
 		mBubble.y = y+random.nextInt(30);
 		
-		mBubble.speedy = (float) (0.1f * random.nextInt(80) - 1.0f);
+		mBubble.speedy = (float) (0.1f * random.nextInt(130) - 1.2f);
 
-		mBubble.speedx = (float) (3.0f-0.1f * random.nextInt(60));
+		mBubble.speedx = (float) (4.0f-0.1f * random.nextInt(80));
 		
 		mBubble.acceleratY = 0.35f-0.1f*random.nextInt(5);
 		mBubble.acceleratX = 0.25f-0.1f*random.nextInt(5);
@@ -280,6 +282,7 @@ public class BubbleSurface extends SurfaceView
 		
 		float speedy = (float) (bubble.speedy+bubble.acceleratY);
 		float speedx = (float) (bubble.speedx+bubble.acceleratX);
+	
 		
 		bubble.y-=speedy;
 		bubble.x-=speedx;
@@ -335,7 +338,7 @@ public class BubbleSurface extends SurfaceView
       int current = audio.getStreamVolume( AudioManager.STREAM_VOICE_CALL );
 //      Log.d(TAG, "max : " + max + " current : " + current);
   
-      	float vol = (float)current/max * 0.5f;
+      	float vol = (float)current/max ;
 //      	Log.d(TAG, "vol : " + vol );
 		if (mSoundPool != null){
 			//mSoundPool.stop(streamID);
@@ -357,11 +360,15 @@ public class BubbleSurface extends SurfaceView
 	final int SOUND_TYPE_TAP  = 0;
 	final int SOUND_TYPE_DRAG = 1;
 	final int SOUND_TYPE_UP = 2;
+	final int SOUND_TYPE_POP = 3;
+	
+	final int POP_TIMEOUT = 100;
 	
 	Runnable tapTimeout = new Runnable(){
-
+		
 		@Override
 		public void run() {
+			//Log.d(TAG, "tapTimeout : ");
 			// TODO Auto-generated method stub
 			timeOut = true;			
 		}
@@ -385,22 +392,39 @@ public class BubbleSurface extends SurfaceView
 	
 	SoundRunnable soundRunnable =new SoundRunnable();
 	
+	Runnable createRunnable =new Runnable(){
+
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			 //Log.d(TAG, "createRunnable :touching " + touching );
+			if(touching){
+				playTap(SOUND_TYPE_POP);
+			}
+		}
+		
+	};
 	
-   private void playTap(int type){
-	  //Log.d(TAG, "type : " + type +"   timeOut:" + timeOut);
+	
+	synchronized private void playTap(int type){
+	  Log.d(TAG, "type : " + type +"   timeOut:" + timeOut);
 	  switch(type){
 		  case SOUND_TYPE_TAP:
 		  {
 			  timeOut = false;
-			  mHandle.removeCallbacks(tapTimeout);
-			  mHandle.postDelayed((tapTimeout), FORKMILLIS);
+
 			  mHandle.removeCallbacks(soundRunnable);
 			  soundRunnable.setId(0);
 			  mHandle.post(soundRunnable);
+			  
+			  mHandle.postDelayed((tapTimeout), FORKMILLIS);
+			  mHandle.postDelayed(createRunnable,POP_TIMEOUT);
 			  createBubbles(curPoint.x,curPoint.y,40);
 			  break;
 		  }
 		  case SOUND_TYPE_DRAG:
+			  mHandle.removeCallbacks(createRunnable);
+			  
 			  if( timeOut){
 				  timeOut = false;
 				  mHandle.removeCallbacks(soundRunnable);
@@ -408,17 +432,38 @@ public class BubbleSurface extends SurfaceView
 				  mHandle.post(soundRunnable);
 				  mHandle.removeCallbacks(tapTimeout);
 				  mHandle.postDelayed((tapTimeout), FORKMILLIS);
+				  mHandle.postDelayed(createRunnable,POP_TIMEOUT);
+				  
 				  createBubbles(curPoint.x,curPoint.y,40); 
 			  }else{
 				  createBubble(curPoint.x,curPoint.y);
 			  }
-			  
+			  mHandle.postDelayed(createRunnable,POP_TIMEOUT);
 			  break;
+	  
 		  case SOUND_TYPE_UP:
 			  timeOut = false;
 			  mHandle.removeCallbacks(tapTimeout);
+			  mHandle.removeCallbacks(createRunnable);
 			  break;
 			  
+		  case SOUND_TYPE_POP:
+			  mHandle.removeCallbacks(createRunnable);
+			  
+			  if( timeOut){
+				  timeOut = false;
+				  mHandle.removeCallbacks(soundRunnable);
+				  soundRunnable.setId(2);
+				  mHandle.post(soundRunnable);
+				  mHandle.postDelayed(createRunnable,POP_TIMEOUT);
+				  mHandle.removeCallbacks(tapTimeout);
+				  mHandle.postDelayed((tapTimeout), FORKMILLIS);
+				  createBubbles(curPoint.x,curPoint.y,53); 
+			  }else{
+				  createBubbles(curPoint.x,curPoint.y,3);
+			  }
+			  mHandle.postDelayed(createRunnable,POP_TIMEOUT);
+			  break;
 		  default:
 			  timeOut = false;
 			  mHandle.removeCallbacks(tapTimeout);
@@ -447,15 +492,19 @@ public class BubbleSurface extends SurfaceView
         return bitmap;
     }
 	public int getColor(Bitmap bitmap,int x,int y){
-		
+		Log.d(TAG,"getColor:"+x+";"+y);
 		final int COVER = 0XFF; 
 		Random r  = new Random();
-		int transParency = 30 + r.nextInt(20);
+		int transParency = 10 + r.nextInt(69);
 		int tc,rc,gc,bc,color;
 		
 		int rgbPixel = Color.WHITE;
 		if(bitmap != null){
-			rgbPixel = bitmap.getPixel(x, y);
+			try{
+				rgbPixel = bitmap.getPixel(x, y);
+			}catch(IllegalArgumentException e){
+				rgbPixel = Color.WHITE;
+			};
 		}
 //		Log.d(TAG, "rgbPixel"+Integer.toHexString(rgbPixel));
 		tc = (rgbPixel & 0xff000000);
@@ -555,10 +604,11 @@ public class BubbleSurface extends SurfaceView
 	
 			float x = event.getRawX();
 			float y = event.getRawY();
-	
+
+			
 			switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-	
+				touching = true;
 				if (orignPoint == null) {
 					orignPoint = new Point();
 				}
@@ -576,22 +626,22 @@ public class BubbleSurface extends SurfaceView
 			case MotionEvent.ACTION_MOVE:
 				int dx = (int) Math.abs(x - curPoint.x);
 				int dy = (int) Math.abs(y - curPoint.y);
-				if (dx > 10 || dy > 10) {
-					curPoint.x = (int) x;
-					curPoint.y = (int) y;
+				curPoint.x = (int) x;
+				curPoint.y = (int) y;
+				
+				if(curPoint.x-orignPoint.x  > Drawrect.width()*2/3 
+						|| curPoint.y-orignPoint.y > Drawrect.height()*2/4){							
+					unlockBubble();
+					playTap(SOUND_TYPE_UP);
+				
+				}else if(dx>5 || dy > 5){
 					
-					dx = Math.abs(curPoint.x - orignPoint.x);
-					dy = Math.abs(curPoint.y - orignPoint.y);
-					if(dx > Drawrect.width()*2/3 || dy > Drawrect.height()/4){							
-						unlockBubble();
-					}else{
-	
 						playTap(SOUND_TYPE_DRAG);
-					}
-	
 				}
+
 				break;
 			case MotionEvent.ACTION_UP:
+				touching = false;
 				curPoint.x = (int) x;
 				curPoint.y = (int) y;
 				playTap(SOUND_TYPE_UP);

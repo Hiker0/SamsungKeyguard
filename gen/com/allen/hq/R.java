@@ -281,6 +281,7 @@ public final class R {
         public static final int lockscreen_unread_mms_label_new=0x7f09000a;
         public static final int lockscreen_unread_phone_count=0x7f09000d;
         public static final int lockscreen_unread_phone_label=0x7f09000b;
+        public static final int quick_search=0x7f090040;
         public static final int user_info_default=0x7f090005;
     }
     public static final class style {

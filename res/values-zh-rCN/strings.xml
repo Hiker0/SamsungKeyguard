@@ -76,4 +76,5 @@
     <string name="lockscreen_access_pattern_cleared" msgid="5583479721001639579">"图案已清除"</string>
     <string name="lockscreen_access_pattern_cell_added" msgid="6756031208359292487">"已添加单元格"</string>
     <string name="lockscreen_access_pattern_detected" msgid="4988730895554057058">"图案绘制完成"</string>
+    <string name="quick_search" >"快速搜索"</string>
 </resources>

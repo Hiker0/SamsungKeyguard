@@ -12,6 +12,8 @@
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/> 
     <uses-permission android:name="android.permission.SYSTEM_ERROR_WINDOW"/>
     <uses-permission android:name="android.permission.SYSTEM_KEYGUARD_WINDOW"/>
+    <uses-permission android:name="android.permission.SYSTEM_KEYGUARD_DIALOG_WINDOW"/>
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -31,7 +33,7 @@
             android:name="com.allen.hq.bubble.SurfaceActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name" >
-            <!-- 
+            <!--  
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +43,7 @@
         <activity
             android:name="com.allen.hq.keygurad.SettingActivity"
             android:screenOrientation="portrait"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

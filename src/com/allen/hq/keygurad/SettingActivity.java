@@ -77,9 +77,14 @@ public class SettingActivity extends Activity {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				Intent intent = new Intent();
-				intent.setClass(SettingActivity.this, com.allen.hq.keygurad.HQLockServer.class);
-				SettingActivity.this.startService(intent);
+//				Intent intent = new Intent();
+//				intent.setClass(SettingActivity.this, com.allen.hq.keygurad.HQLockServer.class);
+//				SettingActivity.this.startService(intent);
+			    Intent intent;	
+			    intent = new Intent();
+			    intent.setAction("com.hq.action.lockscreen");
+			    intent.addCategory("com.hq.category.NORMAL");
+			    SettingActivity.this.startService(intent);
 			}
 	
 		});
@@ -107,6 +112,7 @@ public class SettingActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		launchService();
 	}
 
 	@Override

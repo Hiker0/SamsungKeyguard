@@ -86,7 +86,9 @@ public class HQLockServer extends Service {
         wp.width  = 720;
         
         //wp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD|WindowManager.LayoutParams.FLAG_FULLSCREEN; 
-        wp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS ;
+        wp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN 
+        		| WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS 
+        		| WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD;
         mWM.addView(root, wp);
         
 		
