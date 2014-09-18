@@ -25,7 +25,7 @@ public class LockAdapter {
 	LockAdapter(Context context){
 		mContext = context;
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-		//locktype = prefs.getInt("lockType", 0);
+		locktype = prefs.getInt("lockType", 0);
 		
 		switch(locktype){
 		case 0:

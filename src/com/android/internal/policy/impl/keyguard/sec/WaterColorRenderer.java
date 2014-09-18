@@ -16,7 +16,6 @@ import android.view.MotionEvent;
 
 import com.allen.hq.R;
 import com.allen.hq.keygurad.LockAdapter.UnlockCallBack;
-import com.android.internal.policy.impl.keyguard.sec.WaterBrushView.OnTriggerListener;
 
 /*<---[don't suport] ZhouXF 2013-09-26 {
  import android.os.DVFSHelper;
@@ -261,7 +260,7 @@ public class WaterColorRenderer implements GLSurfaceView.Renderer {
 
 		}
 	}
-
+	
 	public void onSurfaceCreated(GL10 paramGL10, EGLConfig paramEGLConfig) {
 		Log.d(TAG, "onSurfaceCreated");
 		if (this.mTabletMode == 0)
@@ -497,6 +496,9 @@ public class WaterColorRenderer implements GLSurfaceView.Renderer {
 	  public void setOnTriggerListener(UnlockCallBack listener) {
 	      mOnTriggerListener = listener;
 	  }
+
+
+
 }
 
 /*
